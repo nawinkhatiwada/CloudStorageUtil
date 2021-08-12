@@ -1,0 +1,23 @@
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'gcloud-storage-utils'
+
+    publishedGroupId = 'com.evolve'
+    libraryName = 'gcloud-storage-utils'
+    artifact = 'gcloud-storage-utils'
+
+    libraryDescription = 'Utility library for Google Cloud Storage on Android'
+
+    siteUrl = 'https://git.evolveasia.co/mobile_internal_libraries/cloud-storage-utils'
+    gitUrl = 'https://git.evolveasia.co/mobile_internal_libraries/cloud-storage-utils'
+
+    libraryVersion = '1.0.9'
+
+    developerId = 'krishnalalstha-evolve'
+    developerName = 'Krishna Shrestha'
+    developerEmail = 'krishna06318@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}

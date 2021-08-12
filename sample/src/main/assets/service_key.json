@@ -1,0 +1,12 @@
+{
+  "type": "change here",
+  "project_id": "change here",
+  "private_key_id": "change here",
+  "private_key": "change here",
+  "client_email": "change here",
+  "client_id": "change here",
+  "auth_uri": "change here",
+  "token_uri": "change here",
+  "auth_provider_x509_cert_url": "change here",
+  "client_x509_cert_url": "change here"
+}
