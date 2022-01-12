@@ -47,6 +47,7 @@ class UploadActivity : AppCompatActivity() {
      * on what to fill in.
      */
         const val COGNITO_POOL_ID = "your cognito pool id here"
+        const val REGION = "your upload region"
 
         /*
      * Note, you must first create a bucket using the S3 console before running
@@ -126,7 +127,7 @@ class UploadActivity : AppCompatActivity() {
 
         val imagePath = imagePathList.first()
 
-        val awsConfig = AwsMetaInfo.AWSConfig(getConfigurationFile(resources.openRawResource(R.raw.awsconfiguration)), BUCKET_NAME, COGNITO_POOL_ID, "your region here")
+        val awsConfig = AwsMetaInfo.AWSConfig(getConfigurationFile(resources.openRawResource(R.raw.awsconfiguration)), BUCKET_NAME, COGNITO_POOL_ID, REGION)
         val gcsMetaData = AwsMetaInfo.Builder().apply {
             serviceConfig = awsConfig
             this.awsFolderPath = "${getStoragePath()}/${File(imagePath).name}"

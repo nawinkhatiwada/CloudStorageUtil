@@ -18,10 +18,10 @@ import java.io.OutputStream
 
 fun uploadImageAWS(awsMetaInfo: AwsMetaInfo): Flowable<String> {
     return Flowable.create({ emitter ->
-        val oldExif = ExifInterface(awsMetaInfo.imageMetaInfo.imagePath)
-        val compressedImagePath = compressAwsImage(awsMetaInfo).first
+      /*  val oldExif = ExifInterface(awsMetaInfo.imageMetaInfo.imagePath)
+        val compressedImagePath = compressAwsImage(awsMetaInfo).first*/
         val compressedBitmap = compressAwsImage(awsMetaInfo).second
-            val newExifOrientation = setImageOrientation(oldExif, compressedImagePath)
+           /* val newExifOrientation = setImageOrientation(oldExif, compressedImagePath)
             if (newExifOrientation != null) {
                 try {
                     val rotation = getRotation(newExifOrientation)
@@ -38,7 +38,7 @@ fun uploadImageAWS(awsMetaInfo: AwsMetaInfo): Flowable<String> {
                             }
                             compressedBitmap.recycle()
                         }
-                    } else {
+                    } else {*/
                         if (compressedBitmap != null) {
                             val newBitmap = Bitmap.createBitmap(compressedBitmap, 0, 0, compressedBitmap.width, compressedBitmap.height)
                             if (newBitmap != null) {
@@ -48,12 +48,12 @@ fun uploadImageAWS(awsMetaInfo: AwsMetaInfo): Flowable<String> {
                             }
                             compressedBitmap.recycle()
                         }
-                    }
-                } catch (error: Exception) {
+//                    }
+              /*  } catch (error: Exception) {
                     error.printStackTrace()
                     awsMetaInfo.imageMetaInfo.imagePath = compressedImagePath
-                }
-            }
+                }*/
+//            }
         amazonUploadSingle(awsMetaInfo)
                 ?.subscribeOn(io.reactivex.schedulers.Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
