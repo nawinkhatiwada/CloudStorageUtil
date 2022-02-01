@@ -21,46 +21,53 @@ fun uploadImageAWS(awsMetaInfo: AwsMetaInfo): Flowable<String> {
         val oldExif = ExifInterface(awsMetaInfo.imageMetaInfo.imagePath)
         val compressedImagePath = compressAwsImage(awsMetaInfo).first
         val compressedBitmap = compressAwsImage(awsMetaInfo).second
-        setImageOrientation(oldExif, compressedImagePath)
-        /* val newExifOrientation = setImageOrientation(oldExif, compressedImagePath)
-         if (newExifOrientation != null) {
-             try {
-                 val rotation = getRotation(newExifOrientation)
-                 if (rotation != null) {
-                     val matrix = Matrix()
-                     matrix.postRotate(rotation)
-                     setPostScale(newExifOrientation, matrix)
-                     if (compressedBitmap != null) {
-                         val rotatedBitmap = Bitmap.createBitmap(compressedBitmap, 0, 0, compressedBitmap.width, compressedBitmap.height, matrix, true)
-                         if (rotatedBitmap != null) {
-                             // rotatedBitmap will be recycled inside addAwsWaterMark function
-                             val waterMarkBitmap = addAwsWaterMark(awsMetaInfo, rotatedBitmap)
-                             waterMarkBitmap.recycle()
-                         }
-                         compressedBitmap.recycle()
-                     }
-                 } else {*/
-        if (compressedBitmap != null) {
-            val newBitmap = Bitmap.createBitmap(
-                compressedBitmap,
-                0,
-                0,
-                compressedBitmap.width,
-                compressedBitmap.height
-            )
-            if (newBitmap != null) {
-                // newBitmap will be recycled inside addAwsWaterMark function
-                val waterMarkBitmap = addAwsWaterMark(awsMetaInfo, newBitmap)
-                waterMarkBitmap.recycle()
+        val newExifOrientation = setImageOrientation(oldExif, compressedImagePath)
+        if (newExifOrientation != null) {
+            try {
+                val rotation = getRotation(newExifOrientation)
+                if (rotation != null) {
+                    val matrix = Matrix()
+                    matrix.postRotate(rotation)
+                    setPostScale(newExifOrientation, matrix)
+                    if (compressedBitmap != null) {
+                        val rotatedBitmap = Bitmap.createBitmap(
+                            compressedBitmap,
+                            0,
+                            0,
+                            compressedBitmap.width,
+                            compressedBitmap.height,
+                            matrix,
+                            true
+                        )
+                        if (rotatedBitmap != null) {
+                            // rotatedBitmap will be recycled inside addAwsWaterMark function
+                            val waterMarkBitmap = addAwsWaterMark(awsMetaInfo, rotatedBitmap)
+                            waterMarkBitmap.recycle()
+                        }
+                        compressedBitmap.recycle()
+                    }
+                } else {
+                    if (compressedBitmap != null) {
+                        val newBitmap = Bitmap.createBitmap(
+                            compressedBitmap,
+                            0,
+                            0,
+                            compressedBitmap.width,
+                            compressedBitmap.height
+                        )
+                        if (newBitmap != null) {
+                            // newBitmap will be recycled inside addAwsWaterMark function
+                            val waterMarkBitmap = addAwsWaterMark(awsMetaInfo, newBitmap)
+                            waterMarkBitmap.recycle()
+                        }
+                        compressedBitmap.recycle()
+                    }
+                }
+            } catch (error: Exception) {
+                error.printStackTrace()
+                awsMetaInfo.imageMetaInfo.imagePath = compressedImagePath
             }
-            compressedBitmap.recycle()
         }
-//                    }
-        /*  } catch (error: Exception) {
-              error.printStackTrace()
-              awsMetaInfo.imageMetaInfo.imagePath = compressedImagePath
-          }*/
-//            }
         amazonUploadSingle(awsMetaInfo)
             ?.subscribeOn(io.reactivex.schedulers.Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
